@@ -1,3 +1,6 @@
+export BASHMARK_FILE=~/.bashmarks
+touch $BASHMARK_FILE
+
 function _bookmark_name_valid {
   exit_message=""
   if [ -z $1 ]; then #TODO: What is -z?
@@ -13,19 +16,6 @@ function try_name {
   _bookmark_name_valid $1
   echo "Ready for the exit message? Here it comes:"
   echo $exit_message
-}
-
-function _check_for_storage_file {
-  # checks to see whether we have created a file to store all the bookmarks
-  if [ -z $BASHMARK_FILE ]; then 
-    # this means we have nothing
-    BASHMARK_FILE=~/.bashmarks 
-    # TODO: In the real bashmarks, he doesn't make it an env variable. Why?
-    #       In the real bashmarks, these functions are loaded into the shell by calling
-    #          source
-    #       So maybe they don't need to be an env. variable, 
-  fi 
-  touch $BASHMARK_FILE
 }
 
 function bashmark {
