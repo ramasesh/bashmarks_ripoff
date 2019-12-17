@@ -33,10 +33,19 @@ function gotobashmark {
     echo "A bashmark name must be provided to go to"
   else
     check_if_bashmark $1
-    if [ -z $pointed_directory ]; then 
+    if [ -z "$pointed_directory" ]; then 
       echo "Sorry, bashmark was not valid"
     else
-      cd $pointed_directory
+      if [ -d "$pointed_directory" ]; then 
+        cd $pointed_directory
+        if [ ! $? -eq 0 ]; then
+          echo "Changing into the bashmark directory seems to have failed."
+          echo "   You might want to check which directory you are in."
+          echo "   This is likely a permissions issue." 
+        fi 
+      else
+        echo "The directory the bashmark referred to, $pointed_directory, must no longer exist"
+      fi
     fi
   fi
 }
