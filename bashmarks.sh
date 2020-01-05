@@ -51,7 +51,7 @@ function gotobashmark {
 }
 
 function list_bashmarks {
-  cat $BASHMARK_FILE | cut -d':' -f 1
+  cat $BASHMARK_FILE | grep -v COMMAND_SHORTCUT | cut -d':' -f 1
 }
 
 function check_if_bashmark {
@@ -81,6 +81,40 @@ function delete_bashmark {
       cat $BASHMARK_FILE | sed "/^$1:/d" > tempfile
       mv tempfile $BASHMARK_FILE
     fi
+  fi
+}
+
+function bashmark_shortcut {
+  if [ $# -eq 0 ]; then
+    # without arguments, lists all the current bashmark shortcuts
+    echo "Current bashmark shortcuts:"
+    cat $BASHMARK_FILE | grep COMMAND_SHORTCUT | cut -d" " -f2,3 | tr " " ":"
+  else
+    if [ $# -eq 2 ]; then
+      # if two arguments are provided, then we update the bashmark
+      # either the shortcutis there already, or it is not
+      if [ "gotobashmark" == $1 ] || [ "list_bashmarks" == $1 ] || [ "delete_bashmark" == $1 ] || [ "bashmark" == $1 ]; then
+        # TODO For the above condition, there should be a way to write it more cleanly
+        # with a grep, but I couldn't get it to work earlier.
+        echo "Setting bashmark shortcut for command $1"
+
+        # check if there was an old alias, and if so, unalias it
+        old_alias=`grep "COMMAND_SHORTCUT $1" $BASHMARK_FILE | cut -d" " -f3`
+        echo "Old alias, which will now be unaliased, was $old_alias"
+        unalias $old_alias 2> /dev/null
+
+        cat $BASHMARK_FILE | grep -v "COMMAND_SHORTCUT $1" > $BASHMARK_FILE.tmp
+        echo "COMMAND_SHORTCUT $1 $2" >> $BASHMARK_FILE.tmp
+        mv $BASHMARK_FILE.tmp $BASHMARK_FILE
+
+        # Now set new alias
+        alias $2=$1
+        echo "New alias is $2"
+      else
+        echo "First argument must be one of [gotobashmark, list_bashmarks, delete_bashmark]"
+        exit 1
+      fi 
+    fi 
   fi
 }
 
