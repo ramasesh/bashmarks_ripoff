@@ -3,7 +3,7 @@ Implementation of bashmarks, based on the original
 
 Original bashmarks, by [Huy Nguyen](https://github.com/huyng), can be found [here](https://github.com/huyng/bashmarks).  The idea was to use this as a way to learn shell scripting.
 
-#Installation
+# Installation
 Clone this repo and then run ```source bashmarks.sh``` to get a feel for how it works.  To make these commands available in any bash sesion, add the command ```source path/to/bashmarks.sh``` to your bash profile or bash rc (TODO what's the difference between the two?  I know one gets executed every time and one only on login, but which is which?)  
 
 
