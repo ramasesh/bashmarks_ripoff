@@ -34,7 +34,6 @@ function gotobashmark {
   else
     unset pointed_directory
     check_if_bashmark $1 > /dev/null 2> /dev/null
-    echo $pointed_directory
     if [ -z "$pointed_directory" ]; then
       if [ -d $1 ]; then
         echo "Directory (rather than bashmark) provided, going there"
