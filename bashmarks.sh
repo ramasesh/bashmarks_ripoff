@@ -118,3 +118,7 @@ function bashmark_shortcut {
   fi
 }
 
+alias `grep "COMMAND_SHORTCUT gotobashmark" $BASHMARK_FILE | cut -d" " -f 3`=gotobashmark 2> /dev/null
+alias `grep "COMMAND_SHORTCUT list_bashmarks" $BASHMARK_FILE | cut -d" " -f 3`=list_bashmarks 2>/dev/null
+alias `grep "COMMAND_SHORTCUT delete_bashmark" $BASHMARK_FILE | cut -d" " -f 3`=delete_bashmark 2>/dev/null
+alias `grep "COMMAND_SHORTCUT bashmark" $BASHMARK_FILE | cut -d" " -f 3`=bashmark 2>/dev/null
