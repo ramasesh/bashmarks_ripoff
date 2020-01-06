@@ -32,7 +32,7 @@ function gotobashmark {
   if [ -z $1 ]; then 
     echo "A bashmark name must be provided to go to" > /dev/tty
   else
-    check_if_bashmark $1
+    check_if_bashmark $1 > /dev/null
     if [ -z "$pointed_directory" ]; then 
       echo "Sorry, bashmark was not valid" > /dev/tty
     else
@@ -59,11 +59,12 @@ function check_if_bashmark {
     echo "A man needs a name" > /dev/tty
   else
     if [ `cat $BASHMARK_FILE | grep ^$1: | wc -l` == 1 ]; then
-      echo "We have a valid bashmark!" > /dev/tty
+      echo "We have a valid bashmark!" 
       cat $BASHMARK_FILE | grep ^$1: | cut -d':' -f 2
       pointed_directory=`cat $BASHMARK_FILE | grep ^$1: | cut -d':' -f 2`
     else
-      echo "We don't have a valid bashmark!" > /dev/tty
+      echo "Provided bashmark INVALID." 1>&2
+      echo "No directory change" 1>&2
       unset pointed_diretory
     fi
   fi
