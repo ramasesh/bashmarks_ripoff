@@ -51,7 +51,7 @@ function gotobashmark {
 }
 
 function list_bashmarks {
-  cat $BASHMARK_FILE | grep -v COMMAND_SHORTCUT | cut -d':' -f 1
+  cat $BASHMARK_FILE | grep -v COMMAND_SHORTCUT 
 }
 
 function check_if_bashmark {
@@ -118,6 +118,7 @@ function bashmark_shortcut {
   fi
 }
 
+# Loads bashmark aliases from the beginning
 for command_to_alias in gotobashmark list_bashmarks delete_bashmark bashmark
 do
   alias `grep "COMMAND_SHORTCUT $command_to_alias" $BASHMARK_FILE | cut -d" " -f 3`=$command_to_alias 2> /dev/null
