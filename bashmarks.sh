@@ -29,14 +29,21 @@ function bashmark {
 }
 
 function gotobashmark {
-  if [ -z $1 ]; then 
+  if [ -z $1 ]; then
     echo "A bashmark name must be provided to go to" > /dev/tty
   else
-    check_if_bashmark $1 > /dev/null
-    if [ -z "$pointed_directory" ]; then 
-      echo "Sorry, bashmark was not valid" > /dev/tty
+    unset pointed_directory
+    check_if_bashmark $1 > /dev/null 2> /dev/null
+    echo $pointed_directory
+    if [ -z "$pointed_directory" ]; then
+      if [ -d $1 ]; then
+        echo "Directory (rather than bashmark) provided, going there"
+        cd $1
+      else
+        echo "Sorry, bashmark was not valid" > /dev/tty
+      fi
     else
-      if [ -d "$pointed_directory" ]; then 
+      if [ -d "$pointed_directory" ]; then
         cd $pointed_directory
         if [ ! $? -eq 0 ]; then
           echo "Changing into the bashmark directory seems to have failed." > /dev/tty
@@ -51,27 +58,26 @@ function gotobashmark {
 }
 
 function list_bashmarks {
-  cat $BASHMARK_FILE | grep -v COMMAND_SHORTCUT 
+  cat $BASHMARK_FILE | grep -v COMMAND_SHORTCUT
 }
 
 function check_if_bashmark {
-  if [ -z $1 ]; then 
+  if [ -z $1 ]; then
     echo "A man needs a name" > /dev/tty
   else
     if [ `cat $BASHMARK_FILE | grep ^$1: | wc -l` == 1 ]; then
-      echo "We have a valid bashmark!" 
+      echo "We have a valid bashmark!"
       cat $BASHMARK_FILE | grep ^$1: | cut -d':' -f 2
       pointed_directory=`cat $BASHMARK_FILE | grep ^$1: | cut -d':' -f 2`
     else
       echo "Provided bashmark INVALID." 1>&2
       echo "No directory change" 1>&2
-      unset pointed_diretory
     fi
   fi
 }
 
 function delete_bashmark {
-  if [ -z $1 ]; then 
+  if [ -z $1 ]; then
     echo "You didn't give me a bashmark to delete!" > /dev/tty
   else 
     check_if_bashmark $1
