@@ -34,6 +34,7 @@ function gotobashmark {
   else
     unset pointed_directory
     check_if_bashmark $1 > /dev/null 2> /dev/null
+    echo $pointed_directory
     if [ -z "$pointed_directory" ]; then
       if [ -d $1 ]; then
         echo "Directory (rather than bashmark) provided, going there"
@@ -43,7 +44,7 @@ function gotobashmark {
       fi
     else
       if [ -d "$pointed_directory" ]; then
-        cd $pointed_directory
+        cd "$pointed_directory"
         if [ ! $? -eq 0 ]; then
           echo "Changing into the bashmark directory seems to have failed." > /dev/tty
           echo "   You might want to check which directory you are in." > /dev/tty
